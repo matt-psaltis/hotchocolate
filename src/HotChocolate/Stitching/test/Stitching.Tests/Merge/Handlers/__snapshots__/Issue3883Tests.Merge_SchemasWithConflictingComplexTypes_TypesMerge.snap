@@ -1,0 +1,47 @@
+﻿type CompanyConnection @source(name: "CompanyConnection", schema: "Schema_A") {
+  pageInfo: PageInfo!
+  edges: [CompanyEdge!]
+  nodes: [Company]
+}
+
+type CompanyEdge @source(name: "CompanyEdge", schema: "Schema_A") {
+  cursor: String!
+  node: Company
+}
+
+type Company @source(name: "Company", schema: "Schema_A") {
+  id: String!
+  name1: String
+}
+
+type Schema_B_CompanyConnection @source(name: "CompanyConnection", schema: "Schema_B") {
+  pageInfo: PageInfo!
+  edges: [CompanyEdge!]
+  nodes: [Company]
+}
+
+type Schema_B_CompanyEdge @source(name: "CompanyEdge", schema: "Schema_B") {
+  cursor: String!
+  node: Company
+}
+
+type Schema_B_Company @source(name: "Company", schema: "Schema_B") {
+  id: String!
+  name3: String
+}
+
+type Schema_C_CompanyConnection @source(name: "CompanyConnection", schema: "Schema_C") {
+  pageInfo: PageInfo!
+  edges: [CompanyEdge!]
+  nodes: [Company]
+}
+
+type Schema_C_CompanyEdge @source(name: "CompanyEdge", schema: "Schema_C") {
+  cursor: String!
+  node: Company
+}
+
+type Schema_C_Company @source(name: "Company", schema: "Schema_C") {
+  id: String!
+  name3: String
+}

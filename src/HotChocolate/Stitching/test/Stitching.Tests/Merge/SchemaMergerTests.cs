@@ -53,6 +53,28 @@ namespace HotChocolate.Stitching.Merge
         }
 
         [Fact]
+        public void MergeConflictingSchemasWithDefaultHandler()
+        {
+            // arrange
+            DocumentNode schema_a =
+                Utf8GraphQLParser.Parse(
+                    FileResource.Open("Customer.graphql"));
+            DocumentNode schema_b =
+                Utf8GraphQLParser.Parse(
+                    FileResource.Open("Customer.graphql"));
+
+            // act
+            DocumentNode schema = SchemaMerger.New()
+                .AddSchema("A", schema_a)
+                .AddSchema("B", schema_b)
+                .Merge();
+
+            // assert
+            schema.Print().MatchSnapshot();
+        }
+
+
+        [Fact]
         public void MergeDemoSchemaAndRemoveRootTypes()
         {
             // arrange

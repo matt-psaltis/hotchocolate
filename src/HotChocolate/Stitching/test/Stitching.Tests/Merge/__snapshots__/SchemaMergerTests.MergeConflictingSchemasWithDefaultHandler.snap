@@ -1,0 +1,43 @@
+﻿type Query {
+  customer(id: ID!): Customer @delegate(schema: "A")
+  consultant(id: ID!): Consultant @delegate(schema: "A")
+  customerOrConsultant(id: ID!): CustomerOrConsultant @delegate(schema: "A")
+  B_customer(id: ID!): Customer @delegate(schema: "B", path: "customer(id: $arguments:id)")
+  B_consultant(id: ID!): Consultant @delegate(schema: "B", path: "consultant(id: $arguments:id)")
+  B_customerOrConsultant(id: ID!): CustomerOrConsultant @delegate(schema: "B", path: "customerOrConsultant(id: $arguments:id)")
+}
+
+type Customer @source(name: "Customer", schema: "A") {
+  id: ID!
+  name: String!
+  consultant: Consultant
+  complexArg(arg: ComplexInputType): String
+}
+
+type B_Customer @source(name: "Customer", schema: "B") {
+  id: ID!
+  name: String!
+  consultant: B_Consultant
+  complexArg(arg: ComplexInputType): String
+}
+
+type Consultant @source(name: "Consultant", schema: "A") {
+  id: ID!
+  name: String!
+}
+
+type B_Consultant @source(name: "Consultant", schema: "B") {
+  id: ID!
+  name: String!
+}
+
+union CustomerOrConsultant @source(name: "CustomerOrConsultant", schema: "A") = Customer | Consultant
+
+union B_CustomerOrConsultant @source(name: "CustomerOrConsultant", schema: "B") = B_Customer | B_Consultant
+
+input ComplexInputType @source(name: "ComplexInputType", schema: "A") @source(name: "ComplexInputType", schema: "B") {
+  deeper: ComplexInputType
+  deeperArray: [ComplexInputType]
+  value: String
+  valueArray: [String]
+}

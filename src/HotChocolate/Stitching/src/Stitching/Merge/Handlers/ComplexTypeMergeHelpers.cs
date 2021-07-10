@@ -18,6 +18,9 @@ namespace HotChocolate.Stitching.Merge.Handlers
             this ObjectTypeInfo left,
             ObjectTypeInfo right)
         {
+            if (left.Schema != right.Schema)
+                return false;
+
             return CanBeMerged(left.Definition, right.Definition);
         }
 
