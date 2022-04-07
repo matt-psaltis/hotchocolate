@@ -68,8 +68,8 @@ public class MiddlewareBase : IDisposable
     /// <returns>
     /// Returns the request executor for this middleware.
     /// </returns>
-    protected ValueTask<IRequestExecutor> GetExecutorAsync(CancellationToken cancellationToken)
-        => ExecutorProxy.GetRequestExecutorAsync(cancellationToken);
+    protected async ValueTask<IRequestExecutor> GetExecutorAsync(CancellationToken cancellationToken)
+        => await AutoUpdateRequestExecutorProxy.CreateAsync(ExecutorProxy, cancellationToken);
 
     /// <summary>
     /// Gets the schema for this middleware.

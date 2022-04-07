@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\src\Abstractions\HotChocolate.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Core\src\Execution\HotChocolate.Execution.csproj" />
     <ProjectReference Include="..\..\src\ApolloFederation\HotChocolate.ApolloFederation.csproj" />
   </ItemGroup>
 
