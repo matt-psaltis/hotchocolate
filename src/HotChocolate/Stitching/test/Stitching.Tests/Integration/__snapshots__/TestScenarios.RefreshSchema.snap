@@ -1,0 +1,12 @@
+﻿{
+  "ContentType": "application/json; charset=utf-8",
+  "StatusCode": "OK",
+  "Data": {
+    "me": {
+      "id": 1,
+      "name": "Ada Lovelace"
+    }
+  },
+  "Errors": null,
+  "Extensions": null
+}

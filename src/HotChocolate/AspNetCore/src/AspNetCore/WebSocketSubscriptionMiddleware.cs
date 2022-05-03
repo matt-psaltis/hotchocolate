@@ -41,6 +41,11 @@ public class WebSocketSubscriptionMiddleware : MiddlewareBase
             try
             {
                 var executor = await GetExecutorAsync(context.RequestAborted);
+                ExecutorProxy.ExecutorEvicted += (_, _) =>
+                {
+                    context.Abort();
+                };
+
                 var interceptor = executor.GetRequiredService<ISocketSessionInterceptor>();
                 context.Items[WellKnownContextData.RequestExecutor] = executor;
                 await WebSocketSession.AcceptAsync(context, executor, interceptor);

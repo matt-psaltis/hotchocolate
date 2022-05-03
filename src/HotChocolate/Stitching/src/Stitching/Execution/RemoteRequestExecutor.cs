@@ -31,6 +31,8 @@ internal sealed class RemoteRequestExecutor : IRequestExecutor
 
     public ulong Version => _innerExecutor.Version;
 
+    public int ActiveRequests => _innerExecutor.ActiveRequests;
+
     public Task<IExecutionResult> ExecuteAsync(
         IQueryRequest request,
         CancellationToken cancellationToken = default)

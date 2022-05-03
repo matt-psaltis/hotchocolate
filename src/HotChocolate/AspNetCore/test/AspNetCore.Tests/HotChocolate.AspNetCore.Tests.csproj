@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
 
   <PropertyGroup>
     <AssemblyName>HotChocolate.AspNetCore.Tests</AssemblyName>
@@ -9,6 +9,7 @@
     <ProjectReference Include="..\..\..\Core\src\Types.Scalars.Upload\HotChocolate.Types.Scalars.Upload.csproj" />
     <ProjectReference Include="..\..\..\Core\test\StarWars\HotChocolate.StarWars.Tests.csproj" />
     <ProjectReference Include="..\..\..\Core\test\Utilities\HotChocolate.Tests.Utilities.csproj" />
+    <ProjectReference Include="..\..\..\Stitching\src\Stitching.Redis\HotChocolate.Stitching.Redis.csproj" />
     <ProjectReference Include="..\..\src\AspNetCore\HotChocolate.AspNetCore.csproj" />
     <ProjectReference Include="..\..\src\Transport.Sockets.Client\HotChocolate.Transport.Sockets.Client.csproj" />
   </ItemGroup>
@@ -25,6 +26,8 @@
   <!--For Visual Studio for Mac Test Explorer we need this reference here-->
   <ItemGroup>
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
+    <PackageReference Include="StackExchange.Redis" Version="2.2.88" />
+    <PackageReference Include="Squadron.Redis" Version="0.15.0" />
   </ItemGroup>
 
 </Project>

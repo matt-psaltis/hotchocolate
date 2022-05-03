@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using HotChocolate.Configuration;
 using HotChocolate.Types;
@@ -12,15 +13,19 @@ public partial class Schema
     private readonly Action<ISchemaTypeDescriptor> _configure;
     private bool _sealed;
 
+    public static readonly List<WeakReference<Schema>> Schemas = new();
+
     protected internal Schema()
     {
+        Schemas.Add(new WeakReference<Schema>(this));
         _configure = Configure;
     }
 
     public Schema(Action<ISchemaTypeDescriptor> configure)
     {
+        Schemas.Add(new WeakReference<Schema>(this));
         _configure = configure
-            ?? throw new ArgumentNullException(nameof(configure));
+                     ?? throw new ArgumentNullException(nameof(configure));
     }
 
     protected virtual void Configure(ISchemaTypeDescriptor descriptor)
