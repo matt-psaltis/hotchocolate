@@ -40,13 +40,18 @@ public class WebSocketSubscriptionMiddleware : MiddlewareBase
         {
             try
             {
-                var executor = await GetExecutorAsync(context.RequestAborted);
-                ExecutorProxy.ExecutorEvicted += (_, _) =>
-                {
-                    context.Abort();
-                };
+                IRequestExecutor executor = await GetExecutorAsync(context.RequestAborted);
+                RequestExecutorProxy proxy = ExecutorProxy;
 
-                var interceptor = executor.GetRequiredService<ISocketSessionInterceptor>();
+                void OnExecutorProxyOnExecutorEvicted(object o, EventArgs eventArgs)
+                {
+                    proxy.ExecutorEvicted -= OnExecutorProxyOnExecutorEvicted!;
+                    context.Abort();
+                }
+
+                proxy.ExecutorEvicted += OnExecutorProxyOnExecutorEvicted!;
+
+                ISocketSessionInterceptor interceptor = executor.GetRequiredService<ISocketSessionInterceptor>();
                 context.Items[WellKnownContextData.RequestExecutor] = executor;
                 await WebSocketSession.AcceptAsync(context, executor, interceptor);
             }
