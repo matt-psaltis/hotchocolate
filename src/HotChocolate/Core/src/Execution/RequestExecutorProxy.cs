@@ -204,6 +204,7 @@ public class RequestExecutorProxy : IDisposable
     {
         if (!_disposed && disposing)
         {
+            _executorResolver.RequestExecutorEvicted -= EvictRequestExecutor;
             _executor = null;
             _semaphore.Dispose();
             _disposed = true;

@@ -36,18 +36,18 @@ public class WebSocketSubscriptionMiddleware : MiddlewareBase
             context.Items[WellKnownContextData.SchemaName] = SchemaName.Value;
         }
 
+        void OnExecutorProxyOnExecutorEvicted(object o, EventArgs eventArgs)
+        {
+            context.Abort();
+        }
+
         using (_diagnosticEvents.WebSocketSession(context))
         {
+            RequestExecutorProxy proxy = ExecutorProxy;
+
             try
             {
                 IRequestExecutor executor = await GetExecutorAsync(context.RequestAborted);
-                RequestExecutorProxy proxy = ExecutorProxy;
-
-                void OnExecutorProxyOnExecutorEvicted(object o, EventArgs eventArgs)
-                {
-                    proxy.ExecutorEvicted -= OnExecutorProxyOnExecutorEvicted!;
-                    context.Abort();
-                }
 
                 proxy.ExecutorEvicted += OnExecutorProxyOnExecutorEvicted!;
 
@@ -58,6 +58,10 @@ public class WebSocketSubscriptionMiddleware : MiddlewareBase
             catch (Exception ex)
             {
                 _diagnosticEvents.WebSocketSessionError(context, ex);
+            }
+            finally
+            {
+                proxy.ExecutorEvicted -= OnExecutorProxyOnExecutorEvicted!;
             }
         }
     }

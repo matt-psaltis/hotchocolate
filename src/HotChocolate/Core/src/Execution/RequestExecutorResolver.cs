@@ -163,7 +163,7 @@ internal sealed class RequestExecutorResolver
             }, default, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
     }
 
-        private static async Task CleanupExecutor(RegisteredExecutor registeredExecutor)
+    private static async Task CleanupExecutor(RegisteredExecutor registeredExecutor)
     {
         try
         {
@@ -478,7 +478,7 @@ internal sealed class RequestExecutorResolver
 
         public void Dispose()
         {
-            if (_disposed)
+            if (!_disposed)
             {
                 if (Services is IDisposable d)
                 {

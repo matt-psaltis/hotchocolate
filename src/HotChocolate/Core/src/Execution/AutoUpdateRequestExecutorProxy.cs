@@ -24,8 +24,13 @@ public class AutoUpdateRequestExecutorProxy : IRequestExecutor
         _executorProxy = requestExecutorProxy;
         _executor = initialExecutor;
 
-        _executorProxy.ExecutorEvicted += (sender, args) => BeginUpdateExecutor();
+        _executorProxy.ExecutorEvicted += OnExecutorProxyOnExecutorEvicted!;
 
+        BeginUpdateExecutor();
+    }
+
+    private void OnExecutorProxyOnExecutorEvicted(object sender, EventArgs args)
+    {
         BeginUpdateExecutor();
     }
 
@@ -185,6 +190,7 @@ public class AutoUpdateRequestExecutorProxy : IRequestExecutor
     {
         if (!_disposed && disposing)
         {
+            _executorProxy.ExecutorEvicted -= OnExecutorProxyOnExecutorEvicted!;
             _executorProxy.Dispose();
             _semaphore.Dispose();
             _executor = null!;
