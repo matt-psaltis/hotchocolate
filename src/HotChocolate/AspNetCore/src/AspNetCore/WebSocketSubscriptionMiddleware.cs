@@ -44,12 +44,13 @@ public class WebSocketSubscriptionMiddleware : MiddlewareBase
         using (_diagnosticEvents.WebSocketSession(context))
         {
             RequestExecutorProxy proxy = ExecutorProxy;
-
+            AutoUpdateRequestExecutorProxy? executor = default;
             try
             {
-                IRequestExecutor executor = await GetExecutorAsync(context.RequestAborted);
-
                 proxy.ExecutorEvicted += OnExecutorProxyOnExecutorEvicted!;
+
+                executor = await AutoUpdateRequestExecutorProxy
+                    .CreateAsync(proxy, context.RequestAborted);
 
                 ISocketSessionInterceptor interceptor = executor.GetRequiredService<ISocketSessionInterceptor>();
                 context.Items[WellKnownContextData.RequestExecutor] = executor;
@@ -62,6 +63,7 @@ public class WebSocketSubscriptionMiddleware : MiddlewareBase
             finally
             {
                 proxy.ExecutorEvicted -= OnExecutorProxyOnExecutorEvicted!;
+                executor?.Dispose();
             }
         }
     }

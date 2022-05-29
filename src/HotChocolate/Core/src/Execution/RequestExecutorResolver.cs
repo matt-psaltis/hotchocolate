@@ -153,6 +153,9 @@ internal sealed class RequestExecutorResolver
                                 .ConfigureAwait(false);
                         }
                     }
+
+                    registeredExecutor.Setup.OnRequestExecutorCreated.Clear();
+                    registeredExecutor.Setup.OnRequestExecutorEvicted.Clear();
                 }
                 finally
                 {
