@@ -36,7 +36,7 @@ public class WebSocketSubscriptionMiddleware : MiddlewareBase
             context.Items[WellKnownContextData.SchemaName] = SchemaName.Value;
         }
 
-        void OnExecutorProxyOnExecutorEvicted(object o, EventArgs eventArgs)
+        void OnExecutorProxyOnExecutorEvicted(object owner, EventArgs eventArgs)
         {
             context.Abort();
         }
@@ -62,8 +62,9 @@ public class WebSocketSubscriptionMiddleware : MiddlewareBase
             }
             finally
             {
-                proxy.ExecutorEvicted -= OnExecutorProxyOnExecutorEvicted!;
+                context.Items[WellKnownContextData.RequestExecutor] = default;
                 executor?.Dispose();
+                proxy.ExecutorEvicted -= OnExecutorProxyOnExecutorEvicted!;
             }
         }
     }
